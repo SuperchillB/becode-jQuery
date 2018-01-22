@@ -11,8 +11,27 @@
 			margin: 0;
 			display: flex;
 			align-items: center;
+			justify-content: center;
 		}
-		
+		#container {
+			height: 300px;
+			width: 300px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+		}
+		form {
+			display: flex;
+			flex-direction: column;
+			margin-bottom: 30px;
+		}
+		#message {
+			height: 100px;
+			width: 100%;
+			border: 1px solid black;
+			margin-top: 30px;
+		}
 		
 
 	</style>
@@ -20,7 +39,40 @@
 </head>
 <body>
 
-	
+	<div id="container">
+		<form>
+			<div>
+				<label for="name">Name</label>
+				<input id="name" type="text">
+			</div>
+			<div>
+				<label for="firstname">Last name</label>
+				<input id="firstname" type="text">
+			</div>
+			<div>
+				<label for="date">Date of birth</label>
+				<input id="date" type="date">
+			</div>
+			<div>
+				<label for="place">Place of birth</label>
+				<input id="place" type="text">
+			</div>
+			<div>
+				<label for="job">Position (job)</label>
+				<input id="job" type="text">
+			</div>
+			<div>
+				<label for="company">Employer (company)</label>
+				<input id="company" type="text">
+			</div>
+		</form>
+		<div>
+			<button>Generate sentence</button>
+		</div>
+		<div id="message">
+			
+		</div>
+	</div>
 
 	<script
   src="https://code.jquery.com/jquery-3.2.1.js"
