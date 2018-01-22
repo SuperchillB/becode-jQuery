@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Bungee+Hairline|Bungee+Shade|Cutive+Mono|Lekton" rel="stylesheet">
 	<style>
 
 		body {
@@ -17,16 +18,35 @@
 		
 		h1 {
 			text-align: center;
+			font-family: 'Bungee Hairline', cursive;
+			/*font-family: 'Bungee Shade', cursive;*/
+			/*font-family: 'Lekton', sans-serif;*/
+			/*font-family: 'Cutive Mono', monospace;*/
+		}
+
+		h1 span {
+			font-family: 'Bungee Shade', cursive;
+		}
+
+		h2 {
+			font-family: 'Bungee Hairline', cursive;
+			/*font-family: 'Bungee Shade', cursive;*/
+			/*font-family: 'Lekton', sans-serif;*/
+			/*font-family: 'Cutive Mono', monospace;*/
+			margin-bottom: 0;
 		}
 
 		#container {
 			height: 600px;
 			width: 500px;
-			border: 1px solid black;
+			/*border: 1px solid black;*/
 			display: flex;
 			flex-direction: column;
 			justify-content: space-around;
 			align-items: center;
+			/*background-color: #232323;*/
+			background-color: #fff;
+			/*color: white;*/
 		}
 
 		#block-top {
@@ -38,61 +58,98 @@
 
 		#block-bottom {
 			text-align: center;
-			border: 1px solid blue;
+			/*border: 1px solid blue;*/
 		}
 
 		#message {
 			height: 100px;
 			width: 400px;
-			border: 1px solid green;
+			/*border: 1px solid green;*/
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			font-size: 25px;
+			/*font-family: 'Bungee Hairline', cursive;*/
+			font-family: 'Lekton', sans-serif;
+			/*font-family: 'Cutive Mono', monospace;*/
+			border: 1px solid #232323;
 		}
 
 		.items {
 			height: 200px;
 			width: 200px;
-			border: 1px solid red;
+			/*border: 1px solid red;*/
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 			font-size: 40px;
+			transition: all ease 1s;
 		}
 
-		/*.player-area div {
-			cursor: pointer;
-		}*/
-
 		.player-area {
-			border: 1px solid brown;
+			/*border: 1px solid brown;*/
+			padding-bottom: 20px;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
+			/*background-color: #232323;*/
+			/*color: white;*/
+		}
+
+		.player-area:nth-of-type(1) {
+			background-color: #232323;
+			color: white;
+		}
+
+		.player-area:nth-of-type(3) {
+			background-color: lightgrey;
+			color: #232323;
+		}		
+
+		.player-area div:nth-child(3), .player-area div:nth-child(4) {
+			font-family: 'Bungee Hairline', cursive;
+			/*font-family: 'Lekton', sans-serif;*/
+			/*font-family: 'Cutive Mono', monospace;*/
+		}
+
+		#vs {
+			font-family: 'Bungee Hairline', cursive;
+			/*font-family: 'Bungee Shade', cursive;*/
+			/*font-family: 'Lekton', sans-serif;*/
+			/*font-family: 'Cutive Mono', monospace;*/
 		}
 
 		#block-top div:nth-child(2) {
 			font-size: 40px;
 		}
 
+		#block-bottom {
+			font-family: 'Bungee Hairline', cursive;
+			/*font-family: 'Lekton', sans-serif;*/
+		}
+
 		#your-score {
 			height: 30px;
-			border: 1px solid pink;
+			/*border: 1px solid pink;*/
 		}
 
 		#computer-score {
 			height: 30px;
-			border: 1px solid pink;
+			/*border: 1px solid pink;*/
 		}
 
-		.hide {
-			display: none;
+		#play, #reset {
+			border: 2px solid #232323;
+			background-color: white;
+			height: 40px;
+			cursor: pointer;
+			outline: none;
 		}
 
 		.select {
-			color: pink;
+			color: cyan;
 		}
 
 	</style>
@@ -101,7 +158,7 @@
 <body>
 
 	<h1>The ultimate <br>
-		ROCK, PAPER, SCISSORS <br>
+		<span>ROCK, PAPER, SCISSORS</span> <br>
 	game</h1>
 
 	<div id="container">
@@ -117,7 +174,7 @@
 				<div id="your-defeats">Defeats: <span>0</span></div>
 				<!-- <div id="percentage">Percentage of wins against computer: <span></span></div> -->
 			</div>
-			<div>VS</div>
+			<div id="vs">VS</div>
 			<div class="player-area">
 				<h2>Computer</h2>
 				<div class="items">
@@ -146,6 +203,7 @@
 
 		let options = ['rock', 'paper', 'scissors'];
 
+		// FUNCTION THAT GETS RANDOM NUMBER
 		let randomNumber = function() {
 			let random = Math.floor(Math.random()*3);
 			return random;
@@ -166,18 +224,30 @@
 		let computerTurn = function () {
 			switch (number) {
 				case 0:
-					$('.items span:nth-child(2)').hide();
-					$('.items span:nth-child(3)').hide();
+					$('.items span:nth-child(2)').fadeTo('slow', 0.00, function(){
+						$(this).slideUp('slow');
+					});
+					$('.items span:nth-child(3)').fadeTo('slow', 0.00, function(){
+						$(this).slideUp('slow');
+					});
 					computerChoice = options[0];
 					break;
 				case 1:
-					$('.items span:nth-child(1)').hide();
-					$('.items span:nth-child(3)').hide();
+					$('.items span:nth-child(1)').fadeTo('slow', 0.00, function(){
+						$(this).slideUp('slow');
+					});
+					$('.items span:nth-child(3)').fadeTo('slow', 0.00, function(){
+						$(this).slideUp('slow');
+					});
 					computerChoice = options[1];
 					break;
 				case 2:
-					$('.items span:nth-child(1)').hide();
-					$('.items span:nth-child(2)').hide();
+					$('.items span:nth-child(1)').fadeTo('slow', 0.00, function(){
+						$(this).slideUp('slow');
+					});
+					$('.items span:nth-child(2)').fadeTo('slow', 0.00, function(){
+						$(this).slideUp('slow');
+					});
 					computerChoice = options[2];
 					break;
 			}
@@ -207,7 +277,7 @@
 		$('#play').on('click', function(e){
 			if (youClicked == false) {
 				// alert("Pick an item first!");
-				$('#message').text('Pick an item first!');
+				$('#message').text('PICK AN ITEM FIRST!');
 				setTimeout("$('#message').text('')", 3000);
 				e.preventDefault();
 				return false;
@@ -216,43 +286,31 @@
 				youHide();
 				computerTurn();
 				if (computerChoice == yourChoice) {
-					$('#message').text('Draw: play again!');
+					$('#message').text('DRAW: PLAY AGAIN!');
 				} else if (computerChoice == options[0] && yourChoice == options[1]) {
-					$('#message').text('You win!');
+					$('#message').text('YOU WIN!');
 					yourWins++;
 					computerDefeats++;
-					// $('#your-wins span').text(yourWins);
-					// $('#computer-defeats span').text(computerDefeats);
 				} else if (computerChoice == options[0] && yourChoice == options[2]) {
-					$('#message').text('Computer wins!');
+					$('#message').text('COMPUTER WINS!');
 					computerWins++;
 					yourDefeats++;
-					// $('#computer-wins span').text(yourWins);
-					// $('#your-defeats span').text(computerDefeats);
 				} else if (computerChoice == options[1] && yourChoice == options[0]) {
-					$('#message').text('Computer wins!');
+					$('#message').text('COMPUTER WINS!');
 					computerWins++;
 					yourDefeats++;
-					// $('#computer-wins span').text(yourWins);
-					// $('#your-defeats span').text(computerDefeats);
 				} else if (computerChoice == options[1] && yourChoice == options[2]) {
-					$('#message').text('You win!');
+					$('#message').text('YOU WIN!');
 					yourWins++;
 					computerDefeats++;
-					// $('#your-wins span').text(yourWins);
-					// $('#computer-defeats span').text(computerDefeats);
 				} else if (computerChoice == options[2] && yourChoice == options[0]) {
-					$('#message').text('You win!');
+					$('#message').text('YOU WIN!');
 					yourWins++;
 					computerDefeats++;
-					// $('#your-wins span').text(yourWins);
-					// $('#computer-defeats span').text(computerDefeats);
 				} else if (computerChoice == options[2] && yourChoice == options[1]) {
-					$('#message').text('Computer wins!');
+					$('#message').text('COMPUTER WINS!');
 					computerWins++;
 					yourDefeats++;
-					// $('#computer-wins span').text(yourWins);
-					// $('#your-defeats span').text(computerDefeats);
 				} 
 			}
 
@@ -268,8 +326,8 @@
 				yourChoice = '';
 				youClicked = false;
 				$('#message').text('');
-				$('.items div').show();
-				$('.items span').show();
+				$('.items div').show().css({opacity:1});
+				$('.items span').show().css({opacity:1});
 				$('.items div').removeClass('select');
 			}, 3000);
 		})
@@ -277,14 +335,26 @@
 		// FUNCTION TO HIDE YOUR ITEMS WHEN GAME IS ON
 		let youHide = function() {
 			if (yourChoice == options[0]) {
-				$('.items div:nth-child(2)').hide();
-				$('.items div:nth-child(3)').hide();
+				$('.items div:nth-child(2)').fadeTo('slow', 0.00, function(){
+					$(this).slideUp('slow');
+				});
+				$('.items div:nth-child(3)').fadeTo('slow', 0.00, function(){
+					$(this).slideUp('slow');
+				});
 			} else if (yourChoice == options[1]) {
-				$('.items div:nth-child(1)').hide();
-				$('.items div:nth-child(3)').hide();
+				$('.items div:nth-child(1)').fadeTo('slow', 0.00, function(){
+					$(this).slideUp('slow');
+				});
+				$('.items div:nth-child(3)').fadeTo('slow', 0.00, function(){
+					$(this).slideUp('slow');
+				});
 			} else if (yourChoice == options[2]) {
-				$('.items div:nth-child(1)').hide();
-				$('.items div:nth-child(2)').hide();
+				$('.items div:nth-child(1)').fadeTo('slow', 0.00, function(){
+					$(this).slideUp('slow');
+				});
+				$('.items div:nth-child(2)').fadeTo('slow', 0.00, function(){
+					$(this).slideUp('slow');
+				});
 			}
 		}
 
