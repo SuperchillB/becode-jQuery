@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+
+		body {
+			/*height: 100vh;*/
+			margin: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+		}
+		
+		h1 {
+			text-align: center;
+		}
+
+		#container {
+			height: 600px;
+			width: 500px;
+			border: 1px solid black;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+			align-items: center;
+		}
+
+		#block-top {
+			width: 100%;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+		}
+
+		#block-bottom {
+			text-align: center;
+			border: 1px solid blue;
+		}
+
+		#message {
+			height: 100px;
+			width: 400px;
+			border: 1px solid green;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.items {
+			height: 200px;
+			width: 200px;
+			border: 1px solid red;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			font-size: 40px;
+		}
+
+		/*.player-area div {
+			cursor: pointer;
+		}*/
+
+		.player-area {
+			border: 1px solid brown;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		#block-top div:nth-child(2) {
+			font-size: 40px;
+		}
+
+		#your-score {
+			height: 30px;
+			border: 1px solid pink;
+		}
+
+		#computer-score {
+			height: 30px;
+			border: 1px solid pink;
+		}
+
+		.hide {
+			display: none;
+		}
+
+		.select {
+			color: pink;
+		}
+
+	</style>
+
+</head>
+<body>
+
+	<h1>The ultimate <br>
+		ROCK, PAPER, SCISSORS <br>
+	game</h1>
+
+	<div id="container">
+		<div id="block-top">
+			<div class="player-area">
+				<h2>You</h2>
+				<div class="items">
+					<div class="rock"><i class="fa fa-hand-rock-o" aria-hidden="true"></i></div>
+					<div class="paper"><i class="fa fa-hand-paper-o" aria-hidden="true"></i></div>
+					<div class="scissors"><i class="fa fa-hand-scissors-o" aria-hidden="true"></i></div>
+				</div>
+				<div id="your-wins">Wins: <span>0</span></div>
+				<div id="your-defeats">Defeats: <span>0</span></div>
+				<!-- <div id="percentage">Percentage of wins against computer: <span></span></div> -->
+			</div>
+			<div>VS</div>
+			<div class="player-area">
+				<h2>Computer</h2>
+				<div class="items">
+					<span><i class="fa fa-hand-rock-o" aria-hidden="true"></i></span>
+					<span><i class="fa fa-hand-paper-o" aria-hidden="true"></i></span>
+					<span><i class="fa fa-hand-scissors-o" aria-hidden="true"></i></span>
+				</div>
+				<div id="computer-wins">Wins: <span>0</span></div>
+				<div id="computer-defeats">Defeats: <span>0</span></div>
+			</div>
+		</div>
+		<div id="block-bottom">
+			<div id="message"></div>
+			<p>1) Select your item</p>
+			<p>2) Click on 'PLAY GAME'</p>
+			<button id="play">PLAY GAME</button>
+			<button id="reset">RESET GAME</button>
+		</div>
+	</div>
+
+	<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
+	<script>
+
+		let options = ['rock', 'paper', 'scissors'];
+
+		let randomNumber = function() {
+			let random = Math.floor(Math.random()*3);
+			return random;
+		}
+
+		let number = randomNumber();
+		let computerChoice = '';
+		let yourChoice = '';
+		let youClicked = false;
+		let yourWins = 0;
+		let computerWins = 0;
+		let yourDefeats = 0;
+		let computerDefeats = 0;
+		let gameCounter = 0;
+		let percentageWins = Math.round(yourWins/gameCounter); // Percentage of wins against computer
+
+		// FUNCTION TO HIDE COMPUTER'S ITEMS AND GIVE NEW RANDOM NUMBER
+		let computerTurn = function () {
+			switch (number) {
+				case 0:
+					$('.items span:nth-child(2)').hide();
+					$('.items span:nth-child(3)').hide();
+					computerChoice = options[0];
+					break;
+				case 1:
+					$('.items span:nth-child(1)').hide();
+					$('.items span:nth-child(3)').hide();
+					computerChoice = options[1];
+					break;
+				case 2:
+					$('.items span:nth-child(1)').hide();
+					$('.items span:nth-child(2)').hide();
+					computerChoice = options[2];
+					break;
+			}
+			number = randomNumber();
+		}
+
+
+		// SHOW SELECTED ITEM
+		$('.items div').on('click', function(e){
+			$(this).addClass('select').siblings().removeClass('select'); // add class hide to siblings ?
+			youClicked = true;
+			// $('#play').prop('disabled', false);
+		})
+
+		// ASSIGN EACH ICON TO ITS CORRESPONDING VALUE
+		$('.items div:nth-child(1)').on('click', function(){
+			yourChoice = options[0];
+		})
+		$('.items div:nth-child(2)').on('click', function(){
+			yourChoice = options[1];
+		})
+		$('.items div:nth-child(3)').on('click', function(){
+			yourChoice = options[2];
+		})
+
+		// FUNCTION TO TRIGGER GAME (ACTION)
+		$('#play').on('click', function(e){
+			if (youClicked == false) {
+				// alert("Pick an item first!");
+				$('#message').text('Pick an item first!');
+				setTimeout("$('#message').text('')", 3000);
+				e.preventDefault();
+				return false;
+			} else { 
+				gameCounter++;
+				youHide();
+				computerTurn();
+				if (computerChoice == yourChoice) {
+					$('#message').text('Draw: play again!');
+				} else if (computerChoice == options[0] && yourChoice == options[1]) {
+					$('#message').text('You win!');
+					yourWins++;
+					computerDefeats++;
+					// $('#your-wins span').text(yourWins);
+					// $('#computer-defeats span').text(computerDefeats);
+				} else if (computerChoice == options[0] && yourChoice == options[2]) {
+					$('#message').text('Computer wins!');
+					computerWins++;
+					yourDefeats++;
+					// $('#computer-wins span').text(yourWins);
+					// $('#your-defeats span').text(computerDefeats);
+				} else if (computerChoice == options[1] && yourChoice == options[0]) {
+					$('#message').text('Computer wins!');
+					computerWins++;
+					yourDefeats++;
+					// $('#computer-wins span').text(yourWins);
+					// $('#your-defeats span').text(computerDefeats);
+				} else if (computerChoice == options[1] && yourChoice == options[2]) {
+					$('#message').text('You win!');
+					yourWins++;
+					computerDefeats++;
+					// $('#your-wins span').text(yourWins);
+					// $('#computer-defeats span').text(computerDefeats);
+				} else if (computerChoice == options[2] && yourChoice == options[0]) {
+					$('#message').text('You win!');
+					yourWins++;
+					computerDefeats++;
+					// $('#your-wins span').text(yourWins);
+					// $('#computer-defeats span').text(computerDefeats);
+				} else if (computerChoice == options[2] && yourChoice == options[1]) {
+					$('#message').text('Computer wins!');
+					computerWins++;
+					yourDefeats++;
+					// $('#computer-wins span').text(yourWins);
+					// $('#your-defeats span').text(computerDefeats);
+				} 
+			}
+
+			$('#your-wins span').text(yourWins);
+			$('#computer-defeats span').text(computerDefeats);
+			$('#computer-wins span').text(computerWins);
+			$('#your-defeats span').text(yourDefeats);
+
+			console.log("Your win percentage is " + Math.round((yourWins/gameCounter)*100) + "%");
+			// settimeout to empty #message and reset game
+			setTimeout(function() {
+				computerChoice = '';
+				yourChoice = '';
+				youClicked = false;
+				$('#message').text('');
+				$('.items div').show();
+				$('.items span').show();
+				$('.items div').removeClass('select');
+			}, 3000);
+		})
+
+		// FUNCTION TO HIDE YOUR ITEMS WHEN GAME IS ON
+		let youHide = function() {
+			if (yourChoice == options[0]) {
+				$('.items div:nth-child(2)').hide();
+				$('.items div:nth-child(3)').hide();
+			} else if (yourChoice == options[1]) {
+				$('.items div:nth-child(1)').hide();
+				$('.items div:nth-child(3)').hide();
+			} else if (yourChoice == options[2]) {
+				$('.items div:nth-child(1)').hide();
+				$('.items div:nth-child(2)').hide();
+			}
+		}
+
+		// RESET BUTTON: RESETS SCORES & GAME
+		$('#reset').on('click', function() {
+			computerChoice = '';
+			yourChoice = '';
+			youClicked = false;
+			yourWins = 0;
+			yourDefeats = 0;
+			computerWins = 0;
+			computerDefeats = 0;
+			$('#message').text('');
+			$('.items div').show();
+			$('.items span').show();
+			$('.items div').removeClass('select');
+			$('#computer-wins span').text('0');
+			$('#your-defeats span').text('0');
+			$('#your-wins span').text('0');
+			$('#computer-defeats span').text('0');
+		})
+
+	</script>
+
+</body>
+</html>
