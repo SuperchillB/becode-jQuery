@@ -29,8 +29,10 @@
 		#message {
 			height: 100px;
 			width: 100%;
-			border: 1px solid black;
 			margin-top: 30px;
+			text-align: center;
+			opacity: 0;
+			transition: all ease 1s;
 		}
 		
 
@@ -46,7 +48,7 @@
 				<input id="name" type="text">
 			</div>
 			<div>
-				<label for="firstname">Last name</label>
+				<label for="firstname">First name</label>
 				<input id="firstname" type="text">
 			</div>
 			<div>
@@ -79,8 +81,34 @@
   integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
 
 	<script>
+
+		let inputs = $('input');
 		
-		
+		$('button').on('click', function(e){
+			for(let i = 0, length1 = inputs.length; i < length1; i++){
+				if (inputs[i].value == "") {
+					alert('Please fill in the empty field(s)');
+					e.preventDefault;
+					return false;
+				}
+			}
+			let nameVal = $('#name').val();
+			let firstnameVal = $('#firstname').val();
+			let dateVal = convertDate($('#date').val());
+			let placeVal = $('#place').val();
+			let jobVal = $('#job').val();
+			let companyVal = $('#company').val();
+			$('#message').text(firstnameVal + " " + nameVal + ", born on " + dateVal + " in " + placeVal + ", currently working as a " + jobVal + " at " + companyVal);
+			$('#message').css({
+				opacity: 1
+			})
+		})
+
+		let convertDate = function(date) {
+			let dateParts = date.split("-");
+			let newDate = dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0];
+			return newDate;
+		}
 
 	</script>
 
